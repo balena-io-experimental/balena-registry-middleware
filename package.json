@@ -1,13 +1,15 @@
 {
-  "name": "crp-plugin",
+  "name": "balena-registry-middleware",
   "version": "1.0.0",
   "main": "index.js",
-  "author": "Adriaan Knapen <hi@aknapen.nl>",
-  "license": "MIT",
+  "author": "Kyle Harding <kyle@balena.io>",
+  "license": "Apache-2.0",
+  "public": false,
   "scripts": {
     "build": "tsc"
   },
   "dependencies": {
+    "balena-sdk": "^16.13.1",
     "container-registry-proxy": "^4.4.29",
     "typescript": "^4.5.4"
   },
