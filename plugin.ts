@@ -4,7 +4,7 @@ import * as sdk from "./sdk";
 const customPlugin: Plugin = {
   name: "Balena Registry Middleware",
   description:
-    "Map balenaCloud fleet releases to balenaCloud registry image paths.",
+    "Use balenaCloud fleet slugs to pull images from the balenaCloud container registry.",
   requestPipe: async (request: Request) => {
     const { parameters, host, https } = request;
 
@@ -13,7 +13,6 @@ const customPlugin: Plugin = {
     if (!parameters?.repository) {
       // console.log("Dropping request because the repository is undefined.");
       // return undefined;
-      console.log("Forwarding request because the repository is undefined.");
       return request;
     }
 
@@ -28,10 +27,11 @@ const customPlugin: Plugin = {
     }
 
     if (!version) {
-      console.log(
-        "Dropping request because the release version could not be found. Is the fleet public?"
-      );
-      return undefined;
+      // console.log(
+      //   "Dropping request because the release version could not be found. Is the fleet public?"
+      // );
+      // return undefined;
+      return request;
     }
 
     // console.debug(`fleet: ${fleet}`);
@@ -41,25 +41,26 @@ const customPlugin: Plugin = {
     const imageLocation = await sdk.getImageLocation(fleet, service, version);
 
     if (!imageLocation) {
-      console.log(
-        "Dropping request because the image location could not be found. Is the fleet public?"
-      );
-      return undefined;
+      // console.log(
+      //   "Dropping request because the image location could not be found. Is the fleet public?"
+      // );
+      // return undefined;
+      return request;
     }
 
-    // console.log(`Found image location  ${imageLocation}`);
+    console.log(`Found image location  ${imageLocation}`);
 
     const newRequest = {
       ...request,
       parameters: {
         ...parameters,
-        repository: imageLocation.split("/").slice(2).join("/"),
+        repository: imageLocation.split("/").slice(1).join("/"),
         tag: "latest",
       },
       host: imageLocation.split("/")[0],
     };
 
-    console.debug(newRequest);
+    // console.debug(newRequest);
 
     return newRequest;
   },

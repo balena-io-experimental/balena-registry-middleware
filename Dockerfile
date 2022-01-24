@@ -8,9 +8,6 @@ RUN yarn install --frozen-lockfile && \
     yarn build && \
     yarn install --production=true --frozen-lockfile
 
-# install patched proxy server
-# COPY proxyServer.js ./node_modules/container-registry-proxy/dist/
-
 FROM node:16.13.2-alpine3.14 AS runner
 
 ENV NODE_ENV=production
@@ -28,5 +25,3 @@ ENV CUSTOM_PLUGINS dist/plugin.js
 ENV HTTP false
 
 ENTRYPOINT ["container-registry-proxy"]
-
-# CMD [""]
