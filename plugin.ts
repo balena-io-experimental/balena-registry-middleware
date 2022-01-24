@@ -1,5 +1,5 @@
 import { Request, Plugin } from "container-registry-proxy/dist/plugins";
-import * as sdk from "./sdk";
+import * as sdk from "./balena";
 
 const customPlugin: Plugin = {
   name: "Balena Registry Middleware",
